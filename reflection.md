@@ -5,8 +5,19 @@
 **a. Initial design**
 
 - Briefly describe your initial UML design.
+The initial design follows an Object-Oriented Architecture utilizing a Controller-Entity-Strategy pattern. This approach separates the data models from the scheduling engine, ensuring that the application remains modular and easy to extend. The flow is centralized: the AppController facilitates interaction between the user and the system, the Pet and Task classes act as data containers, and the SchedulePlanner serves as the logic engine that evaluates constraints to generate an optimized Plan. This structure allows the core scheduling algorithm to be swapped or updated independently of the user interface.
 - What classes did you include, and what responsibilities did you assign to each?
+I have identified five core classes to handle the system's requirements:
 
+Pet: Functions as the primary entity representing the animal. It manages the state and maintains a collection of Task objects associated with that specific pet.
+
+Task: A data model representing a single care requirement. It stores critical attributes such as name, priority (to handle importance), duration (to manage time constraints), and is_recurring status.
+
+SchedulePlanner: The central logic engine. It is responsible for ingesting user constraints (e.g., total available time, specific preferences) and performing the algorithmic selection of tasks to create an optimized daily schedule.
+
+Plan: A container class that acts as the output of the SchedulePlanner. It holds the finalized list of selected_tasks and the generated rationale string, which explains the logic behind why certain tasks were prioritized or deferred.
+
+AppController: Acts as the bridge between the backend logic and the Streamlit UI. It manages the lifecycle of the application, handling user inputs from the interface and triggering the appropriate methods within the other classes to return the final view.
 **b. Design changes**
 
 - Did your design change during implementation?

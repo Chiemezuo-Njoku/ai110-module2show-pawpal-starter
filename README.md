@@ -45,6 +45,13 @@ pip install -r requirements.txt
 ## 🖥️ Sample Output
 
 Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
+Today's Schedule for Alex
+================================
+  [ ] Refill water           5 min  (daily)
+  [ ] Clean litter box      15 min  (daily)
+  [ ] Morning walk          30 min  (daily)
+--------------------------------
+Total time remaining: 50 min
 
 ```
 # e.g.:

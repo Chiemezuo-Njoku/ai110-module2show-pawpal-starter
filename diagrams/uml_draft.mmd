@@ -1,0 +1,50 @@
+classDiagram
+    class Pet {
+        +str pet_id
+        +str name
+        +str species
+        +list~Task~ tasks
+        +add_task(task) None
+        +remove_task(task_id) None
+        +get_pending_tasks() list~Task~
+    }
+
+    class Task {
+        +str task_id
+        +str name
+        +str category
+        +int priority
+        +int duration
+        +datetime due_time
+        +mark_complete() None
+        +reschedule(new_time) None
+    }
+
+    class SchedulePlanner {
+        +int available_time_pool
+        +dict preferences
+        +generate_plan(pets) Plan
+        +sort_by_priority(tasks) list~Task~
+        +generate_rationale(tasks) str
+    }
+
+    class Plan {
+        +list~Task~ daily_tasks
+        +int total_duration
+        +str rationale
+        +display_summary() str
+    }
+
+    class AppController {
+        +dict current_session_state
+        +handle_user_input(input) None
+        +update_ui() None
+    }
+
+    Pet "1" *-- "0..*" Task : contains
+    SchedulePlanner ..> Task : sorts/schedules
+    SchedulePlanner ..> Plan : produces
+    Plan "1" o-- "0..*" Task : references
+    AppController --> Pet : manages
+    AppController --> SchedulePlanner : invokes
+    AppController --> Plan : displays
