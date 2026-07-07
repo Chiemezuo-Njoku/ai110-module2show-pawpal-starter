@@ -63,20 +63,45 @@ Total time remaining: 50 min
 
 ## 🧪 Testing PawPal+
 
+The scheduling logic in `pawpal_system.py` is covered by a pytest suite in
+`tests/test_pawpal.py`. Run it from the project root:
+
 ```bash
 # Run the full test suite:
-pytest
+python -m pytest
 
 # Run with coverage:
-pytest --cov
+python -m pytest --cov
 ```
 
-Sample test output:
+### What the tests cover
+
+| Area | Scenarios verified |
+|------|--------------------|
+| **Sorting** (`sort_by_time`) | Tasks return in chronological order; correct across the noon boundary (zero-padded `"HH:MM"`); empty schedule is safe; tied times are preserved. |
+| **Recurrence** (`mark_task_complete`) | Completing a `daily`/`weekly` task generates a fresh, incomplete next occurrence via `timedelta`; the new task is a distinct object; `once` tasks do **not** recur. |
+| **Conflict detection** (`detect_conflicts`) | Tasks sharing a `due_time` are flagged; distinct times raise no warning; completed tasks free their slot; three tasks in one slot yield a single grouped warning. |
+| **Filtering** | By completion status and by pet name (case-insensitive). |
+
+### Sample test output
+
+Paste the output of a successful `python -m pytest` run here:
 
 ```
-........                                                                 [100%]
-8 passed in 0.05s
+<!-- paste `python -m pytest` output here, e.g.: -->
+tests\test_pawpal.py ................                                    [100%]
+
+============================= 16 passed in 0.05s ==============================
 ```
+
+### Confidence Level
+
+Rate your confidence in the current test coverage (1–5 stars):
+
+**Confidence:** ⭐️⭐️⭐️⭐️⭐️ <!-- replace with your rating, e.g. ⭐️⭐️⭐️ (3/5) -->
+
+> _Why this rating:_ <!-- one line: what gives you confidence, or what's still untested -->
+
 
 ## 📐 Smarter Scheduling
 
