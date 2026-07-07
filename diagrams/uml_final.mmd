@@ -1,0 +1,45 @@
+classDiagram
+    %% PawPal+ final design — matches pawpal_system.py
+
+    class Task {
+        +str description
+        +int duration_minutes
+        +str frequency
+        +str due_time
+        +bool is_completed
+        +mark_complete() None
+    }
+
+    class Pet {
+        +str pet_id
+        +str name
+        +str species
+        +List~Task~ tasks
+        +add_task(Task task) None
+    }
+
+    class Owner {
+        +str name
+        +List~Pet~ pets
+        +add_pet(Pet pet) None
+        +get_all_tasks() List~Task~
+    }
+
+    class Scheduler {
+        +Owner owner
+        +get_all_tasks() List~Task~
+        +get_incomplete_tasks() List~Task~
+        +get_completed_tasks() List~Task~
+        +organize_by_duration() List~Task~
+        +total_remaining_minutes() int
+        +sort_by_time() List~Task~
+        +filter_by_completion(bool is_completed) List~Task~
+        +filter_by_pet(str pet_name) List~Task~
+        +mark_task_complete(Task task) Task
+        +detect_conflicts() List~str~
+    }
+
+    Owner "1" o-- "*" Pet : manages
+    Pet "1" *-- "*" Task : owns
+    Scheduler "1" --> "1" Owner : reads (dependency injection)
+    Scheduler ..> Task : creates next occurrence

@@ -95,12 +95,34 @@ if owner.pets:
 else:
     st.info("Add a pet first, then you can give it tasks.")
 
+# One Scheduler reads live data from the owner and drives both sections below.
+scheduler = Scheduler(owner)
+
+# --- Mark a task complete ----------------------------------------------------
+# Completing a daily/weekly task auto-schedules its next occurrence. We handle
+# the click *before* rendering the schedule table so the table reflects it, and
+# we deliberately do NOT call st.rerun() here so the st.success stays visible.
+st.subheader("Mark a task done")
+
+incomplete = [task for task in scheduler.sort_by_time() if not task.is_completed]
+if incomplete:
+    # Map labels back to the live Task objects (same reason as the pet picker).
+    task_by_label = {f"{task.due_time}  {task.description}": task for task in incomplete}
+    selected_task_label = st.selectbox("Task to complete", options=list(task_by_label.keys()))
+    if st.button("Mark complete"):
+        chosen = task_by_label[selected_task_label]
+        next_task = scheduler.mark_task_complete(chosen)
+        message = f"Completed '{chosen.description}'."
+        if next_task is not None:
+            message += f" Next {chosen.frequency} occurrence scheduled at {next_task.due_time}."
+        st.success(message)
+else:
+    st.info("Nothing to complete — add a task above.")
+
 # --- Today's schedule --------------------------------------------------------
-# The Scheduler reads live data from the owner, so it always reflects the tasks
-# added above. We show everything ordered by due time and flag any conflicts.
+# Sorted by due time; conflicts (two incomplete tasks in one slot) are flagged.
 st.subheader("Schedule")
 
-scheduler = Scheduler(owner)
 scheduled = scheduler.sort_by_time()
 
 if scheduled:
