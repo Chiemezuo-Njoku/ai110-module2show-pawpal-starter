@@ -74,19 +74,18 @@ pytest --cov
 Sample test output:
 
 ```
-# Paste your pytest output here
+........                                                                 [100%]
+8 passed in 0.05s
 ```
 
 ## 📐 Smarter Scheduling
 
-> Fill in once you've implemented scheduling logic.
-
 | Feature | Method(s) | Notes |
 |---------|-----------|-------|
-| Task sorting | | e.g., by priority, duration |
-| Filtering | | e.g., skip tasks if time runs out |
-| Conflict handling | | e.g., overlapping time slots |
-| Recurring tasks | | e.g., daily vs. weekly |
+| Task sorting | `Scheduler.sort_by_time()`, `organize_by_duration()` | `sort_by_time` orders every task by its `due_time` ("HH:MM") via a `sorted()` lambda key; zero-padded strings compare chronologically. |
+| Filtering | `Scheduler.filter_by_completion(bool)`, `filter_by_pet(name)` | Filter by done/not-done, or by pet name (case-insensitive). |
+| Conflict handling | `Scheduler.detect_conflicts()` | Groups incomplete tasks by `due_time`; returns a warning string per overlapping slot. Never raises — an empty list means no conflicts. |
+| Recurring tasks | `Scheduler.mark_task_complete(task)` | Marks the task done; for `daily`/`weekly` frequency, uses `datetime` + `timedelta` to generate the next occurrence and attaches it to the owning pet. |
 
 ## 📸 Demo Walkthrough
 
